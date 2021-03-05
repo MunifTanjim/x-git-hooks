@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -eu
+
+readonly script_name=$(basename "$0")
+readonly git_params=$*
+
+echo "[git-hooks] running script : ${script_name}"
+echo "[git-hooks] git params     : ${git_params}"

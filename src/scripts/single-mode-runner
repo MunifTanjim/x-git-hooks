@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -eu
+
+readonly hook_name=$(basename "$0")
+readonly git_params=$*
+
+echo "[git-hooks] running hook : ${hook_name}"
+echo "[git-hooks] git params   : ${git_params}"

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+
+readonly hooks_path=$(git config --get core.hooksPath)
+readonly hook_name=$(basename "$0")
+readonly scripts_path="./${hooks_path}/.${hook_name}"
+readonly git_params=$*
+
+echo "[git-hooks] running hook   : ${hook_name}"
+
+for script in ${scripts_path}/*; do
+  ${script} ${git_params}
+done
