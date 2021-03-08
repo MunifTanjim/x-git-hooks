@@ -2,8 +2,8 @@ use std::path::PathBuf;
 
 use crate::shell;
 
-fn is_valid_hooks_path(git_root: &PathBuf, hooks_path: &PathBuf) -> Result<bool, ()> {
-    Ok(git_root == hooks_path.parent().unwrap())
+fn is_valid_hooks_path(git_root: &PathBuf, hooks_path: &PathBuf) -> bool {
+    git_root == hooks_path.parent().unwrap()
 }
 
 pub fn get_root_path(cwd: Option<&str>) -> Result<PathBuf, String> {
@@ -17,16 +17,15 @@ pub fn get_root_path(cwd: Option<&str>) -> Result<PathBuf, String> {
 pub fn get_hooks_path(git_root: &PathBuf) -> Result<PathBuf, String> {
     match shell::run_command("git rev-parse --git-path hooks", git_root.to_str(), None) {
         Ok(Some(path)) => Ok(git_root.join(path)),
-        Err(Some(error)) => return Err(error),
+        Err(Some(error)) => Err(error),
         _ => panic!(),
     }
 }
 
 pub fn set_hooks_path(git_root: &PathBuf, hooks_path: &PathBuf) -> Result<(), String> {
     match is_valid_hooks_path(git_root, hooks_path) {
-        Ok(true) => (),
-        Ok(false) => return Err(format!("invalid hooks path")),
-        _ => panic!(),
+        true => (),
+        false => return Err("invalid hooks path".to_string()),
     };
 
     let path = match hooks_path.is_absolute() {
