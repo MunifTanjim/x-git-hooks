@@ -26,14 +26,12 @@ fn make_executable(file: &File) -> std::io::Result<()> {
 }
 
 pub fn write_file(file_path: &PathBuf, contents: &str, executable: bool) -> Result<(), String> {
-    let mut file =
-        create_file(file_path).expect(&format!("failed to create file {}", file_path.display()));
+    let mut file = create_file(file_path)
+        .unwrap_or_else(|_| panic!("failed to create file {}", file_path.display()));
 
     if executable {
-        make_executable(&file).expect(&format!(
-            "failed to make executable {}",
-            file_path.display()
-        ));
+        make_executable(&file)
+            .unwrap_or_else(|_| panic!("failed to make executable {}", file_path.display()));
     }
 
     match file.write_all(contents.as_bytes()) {

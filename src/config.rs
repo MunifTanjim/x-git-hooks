@@ -44,18 +44,18 @@ fn get_mode(config: &ConfigFile) -> Result<GitHooksMode, ()> {
     Ok(GitHooksMode::Single)
 }
 
-fn get_hooks_path(config: &ConfigFile, git_root: &PathBuf) -> Result<PathBuf, ()> {
+fn get_hooks_path(config: &ConfigFile, git_root: &PathBuf) -> PathBuf {
     let hooks_path = var("GIT_HOOKS_PATH");
 
-    if hooks_path.is_ok() {
-        return Ok(git_root.join(hooks_path.unwrap()));
+    if let Ok(path) = hooks_path {
+        return git_root.join(path);
     }
 
     if let Some(hooks_path) = &config.hooks_path {
-        return Ok(git_root.join(hooks_path));
+        return git_root.join(hooks_path);
     }
 
-    Ok(git_root.join(".git-hooks"))
+    git_root.join(".git-hooks")
 }
 
 pub fn get_config(git_root: &PathBuf) -> Result<GitHooksConfig, serde_yaml::Error> {
@@ -69,7 +69,7 @@ pub fn get_config(git_root: &PathBuf) -> Result<GitHooksConfig, serde_yaml::Erro
     let config: ConfigFile = from_str(&config_blob)?;
 
     let mode = get_mode(&config).expect("invalid config: mode");
-    let hooks_path = get_hooks_path(&config, git_root).expect("invalid config: hooks_path");
+    let hooks_path = get_hooks_path(&config, git_root);
 
     Ok(GitHooksConfig { mode, hooks_path })
 }
