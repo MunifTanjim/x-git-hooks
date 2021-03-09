@@ -10,6 +10,7 @@ mod hooks;
 mod shell;
 
 #[derive(StructOpt, Debug)]
+#[structopt(name = "git-hooks")]
 struct GitHooks {
     #[structopt(long, short)]
     verbose: bool,
