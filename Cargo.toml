@@ -3,7 +3,14 @@ name = "x-git-hooks"
 version = "0.0.0"
 authors = ["MunifTanjim"]
 edition = "2018"
-description = "Git Hooks Handler"
+description = "Git Hooks Manager"
+readme = "README.md"
+homepage = "https://github.com/MunifTanjim/x-git-hooks#readme"
+repository = "https://github.com/MunifTanjim/x-git-hooks"
+license = "MIT"
+keywords = ["git", "git-hooks", "hooks"]
+categories = ["command-line-utilities", "development-tools"]
+exclude = [".github"]
 
 [[bin]]
 name = "git-hooks"
