@@ -1,5 +1,6 @@
 use std::fs::{create_dir_all, File};
 use std::io::prelude::Write;
+#[cfg(target_family = "unix")]
 use std::os::unix::fs::PermissionsExt;
 use std::path::PathBuf;
 
@@ -20,6 +21,7 @@ fn make_executable(file: &File) -> std::io::Result<()> {
 
     let mut permissions = metadata.permissions();
 
+    #[cfg(target_family = "unix")]
     permissions.set_mode(0o755);
 
     file.set_permissions(permissions)
