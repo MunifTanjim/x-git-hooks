@@ -118,7 +118,11 @@ jobs:
         uses: actions/download-artifact@v2
 
       - name: Generate Checksums
-        run: for file in git-hooks-*/git-hooks-*; do sha256sum -b "${file}" > "${file}.sha256"; done
+        run: |
+          for file in git-hooks-*/git-hooks-*; do
+            sha256sum -b "${file}" | sed "s|${file}|$(basename ${file})|" > "${file}.sha256"
+            cat "${file}.sha256"
+          done
 
       - name: Release
         uses: softprops/action-gh-release@v1
